@@ -457,5 +457,9 @@
   {"placeId":"vijayawada","polity":"Eastern Chalukyas","from":624,"to":1189,"sourceIds":["sastri"],"note":"Approximate dates."},
   {"placeId":"puri","polity":"Eastern Ganga dynasty","from":1135,"to":1434,"sourceIds":["kulke"],"note":"Approximate dates."},
   {"placeId":"konark","polity":"Eastern Ganga dynasty","from":1238,"to":1434,"sourceIds":["kulke"],"note":"The Sun Temple was built about 1250."},
-  {"placeId":"puri","polity":"Gajapati Kingdom","from":1434,"to":1541,"sourceIds":["kulke"],"note":"Approximate dates."}
+  {"placeId":"puri","polity":"Gajapati Kingdom","from":1434,"to":1541,"sourceIds":["kulke"],"note":"Approximate dates."},
+  {"placeId":"vaishali","polity":"Magadha","from":-468,"to":-322,"sourceIds":["singh","thapar"],"note":"Absorbed into Magadha after Ajatashatru's defeat of the Vajji confederacy."},
+  {"placeId":"vaishali","polity":"Maurya Empire","from":-322,"to":-185,"sourceIds":["megasthenes","ashoka-edicts","thapar"]},
+  {"placeId":"vaishali","polity":"Shunga dynasty","from":-185,"to":-73,"sourceIds":["singh","thapar"]},
+  {"placeId":"ujjain","polity":"Magadha","from":-400,"to":-320,"sourceIds":["singh","thapar"],"note":"Avanti falls to the Nanda expansion of Magadha before the Mauryan conquest."}
 ]
