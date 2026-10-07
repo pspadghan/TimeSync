@@ -1,0 +1,10 @@
+[
+  {"id": "mughal-gujarat-ahmadabad", "name": "Sarkar of Ahmadabad", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1758, "country": "IND", "districts": ["ahmadabad", "ahmedabad"], "sourceIds": ["ain"]},
+  {"id": "mughal-gujarat-patan", "name": "Sarkar of Patan", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1758, "country": "IND", "districts": ["patan"], "sourceIds": ["ain"]},
+  {"id": "mughal-gujarat-baroda", "name": "Sarkar of Baroda", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1734, "country": "IND", "districts": ["vadodara"], "sourceIds": ["ain"]},
+  {"id": "mughal-gujarat-broach", "name": "Sarkar of Broach", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1758, "country": "IND", "districts": ["bharuch"], "sourceIds": ["ain"]},
+  {"id": "mughal-gujarat-champaner", "name": "Sarkar of Champaner", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1758, "country": "IND", "districts": ["panch mahal"], "sourceIds": ["ain"]},
+  {"id": "mughal-gujarat-surat", "name": "Sarkar of Surat", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1759, "country": "IND", "districts": ["surat"], "sourceIds": ["ain"]},
+  {"id": "mughal-gujarat-sorath", "name": "Sarkar of Sorath", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1730, "country": "IND", "districts": ["junagadh"], "sourceIds": ["ain"]},
+  {"id": "mughal-gujarat-nadot", "name": "Sarkar of Nadot", "kind": "sarkar", "power": "Mughal Empire", "parent": "Subah of Gujarat", "from": 1573, "to": 1758, "country": "IND", "districts": ["narmada"], "sourceIds": ["ain"]}
+]

@@ -1,0 +1,27 @@
+{
+  "note": "Dates are rounded figures from the geological and palaeontological literature, entered from memory and not yet tied to citations. They are context for the reader and are not produced by the plate model.",
+  "stages": [
+    { "from": 200, "to": 165, "title": "Part of Gondwana", "text": "The Indian landmass lies in the southern hemisphere, joined to Africa, Madagascar, Antarctica and Australia." },
+    { "from": 165, "to": 120, "title": "Gondwana breaks apart", "text": "Rifting separates East Gondwana (India, Madagascar, Antarctica, Australia) from Africa, and then India–Madagascar from Antarctica–Australia." },
+    { "from": 120, "to": 85, "title": "Adrift with Madagascar", "text": "India and Madagascar move together until they separate, usually dated to about 90–85 million years ago." },
+    { "from": 85, "to": 60, "title": "The fast run north", "text": "India crosses the ocean unusually quickly. Near 66 million years ago the Deccan Traps erupt across its western side." },
+    { "from": 60, "to": 35, "title": "Meeting Asia", "text": "The first contact with Asia is usually placed at about 55–50 million years ago; estimates range from roughly 59 to 34. Northward motion slows sharply." },
+    { "from": 35, "to": 0, "title": "Raising the Himalaya", "text": "Continued convergence thickens the crust and lifts the Himalaya and Tibet. India is still moving north by a few centimetres a year." }
+  ],
+  "events": [
+    { "ma": 201, "title": "End-Triassic mass extinction", "text": "A large share of marine and land species disappears; dinosaurs become the dominant land animals afterwards." },
+    { "ma": 183, "title": "Karoo–Ferrar eruptions", "text": "Vast lava outpourings across southern Gondwana, linked to its first rifting." },
+    { "ma": 150, "title": "Late Jurassic", "text": "Giant sauropods; the earliest known birds appear in the fossil record." },
+    { "ma": 125, "title": "Flowering plants spread", "text": "Angiosperms diversify through the Early Cretaceous." },
+    { "ma": 100, "title": "Mid-Cretaceous hothouse", "text": "High sea levels flood continental interiors; no polar ice caps." },
+    { "ma": 66, "title": "Chicxulub impact and Deccan Traps", "text": "An asteroid strikes what is now Mexico while the Deccan lavas erupt across western India. Non-avian dinosaurs die out." },
+    { "ma": 56, "title": "Palaeocene–Eocene Thermal Maximum", "text": "A sharp global warming episode lasting on the order of a hundred thousand years." },
+    { "ma": 50, "title": "Early whales", "text": "The earliest whales are found in rocks of this age in what is now Pakistan and India." },
+    { "ma": 34, "title": "Antarctica freezes", "text": "Permanent ice sheets begin to form as the climate cools." },
+    { "ma": 23, "title": "Grasslands expand", "text": "Open grassland ecosystems spread through the Miocene." },
+    { "ma": 15, "title": "Himalaya and monsoon", "text": "A high Himalaya and Tibetan plateau are in place; the South Asian monsoon strengthens over the Miocene." },
+    { "ma": 7, "title": "Human and chimpanzee lineages diverge", "text": "Usually placed between about 7 and 6 million years ago, in Africa." },
+    { "ma": 3, "title": "Ice ages begin", "text": "Northern hemisphere glaciation sets in from about 2.6 million years ago; early stone tools appear in Africa." },
+    { "ma": 0, "title": "Humans", "text": "Homo sapiens appears about 300,000 years ago. All of recorded history fits inside the last step of this timeline." }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {"from":-7000,"to":-3300,"name":"First farming villages","note":"Neolithic settlement, earliest at Mehrgarh."},
+  {"from":-3300,"to":-2600,"name":"Early Harappan period","note":"Towns and regional cultures before the great cities."},
+  {"from":-2600,"to":-1900,"name":"Indus (Harappan) Civilization","note":"Mature urban phase."},
+  {"from":-1900,"to":-600,"name":"Late Harappan, Vedic and Painted Grey Ware period","note":"Known from archaeology and from texts that cannot be tied to exact places and years."},
+  {"from":-600,"to":-322,"name":"Mahajanapadas","note":"The sixteen great states of the Ganga plain and beyond."},
+  {"from":-322,"to":-185,"name":"Maurya Empire","note":""},
+  {"from":-185,"to":320,"name":"Shungas, Satavahanas, Indo-Greeks and Kushans","note":""},
+  {"from":320,"to":550,"name":"Gupta Empire","note":""},
+  {"from":550,"to":1206,"name":"Regional kingdoms","note":"Harsha, the Pallavas, Chalukyas, Rashtrakutas, Pratiharas, Cholas and others."},
+  {"from":1206,"to":1526,"name":"Delhi Sultanate and regional states","note":""},
+  {"from":1526,"to":1757,"name":"Mughal period","note":""},
+  {"from":1757,"to":1858,"name":"East India Company rule","note":""},
+  {"from":1858,"to":1947,"name":"British Raj","note":""},
+  {"from":1947,"to":2027,"name":"Independent India","note":""}
+]
