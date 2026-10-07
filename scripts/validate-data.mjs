@@ -52,6 +52,18 @@ for (const p of places) if (!byPlace.has(p.id)) notes.push(`place "${p.id}" has 
 // calendar day would make that pick silently arbitrary, so it is surfaced here instead.
 const events = JSON.parse(readFileSync(path.join(dir, 'records', 'events.json'), 'utf8'));
 const people = JSON.parse(readFileSync(path.join(dir, 'records', 'people.json'), 'utf8'));
+const personIds = new Set(people.map((p) => p.id));
+
+for (const p of people) {
+  for (const r of p.relationships ?? []) {
+    const at = `${p.id} relationship -> ${r.personId}`;
+    if (!personIds.has(r.personId)) errors.push(`${at}: unknown person`);
+    if (r.personId === p.id) errors.push(`${at}: a person cannot be related to themself`);
+    if (!r.sourceIds?.length) errors.push(`${at}: no supporting work`);
+    for (const s of r.sourceIds ?? []) if (!sourceIds.has(s)) errors.push(`${at}: unknown source "${s}"`);
+  }
+}
+
 const byPerson = new Map();
 for (const e of events) {
   if (e.precision !== 'day') continue;

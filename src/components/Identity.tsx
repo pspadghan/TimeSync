@@ -1,4 +1,11 @@
-import type { Person } from '../data/types';
+import { Link } from 'react-router-dom';
+import { personById } from '../data/people';
+import type { Person, RelationshipKind } from '../data/types';
+
+const RELATIONSHIP_LABEL: Record<RelationshipKind, string> = {
+  family: 'Family', ally: 'Ally', friend: 'Friend', rival: 'Rival',
+  enemy: 'Enemy', mentor: 'Mentor', subordinate: 'Subordinate', overlord: 'Overlord',
+};
 
 /** Everything that pins a record to exactly one human being. */
 export function IdentityCard({ person }: { person: Person }) {
@@ -28,6 +35,21 @@ export function IdentityCard({ person }: { person: Person }) {
           {person.namesakes.map((n) => (
             <p key={n.name}><strong>{n.name}</strong> ({n.life}) — {n.note}</p>
           ))}
+        </>
+      )}
+      {person.relationships && person.relationships.length > 0 && (
+        <>
+          <p className="eyebrow eyebrow--bold">People in their life</p>
+          {person.relationships.map((r) => {
+            const other = personById[r.personId];
+            return (
+              <p key={r.personId}>
+                <span className="chip">{RELATIONSHIP_LABEL[r.kind]}</span>{' '}
+                {other ? <Link className="link" to={`/people/${other.id}`}>{other.name}</Link> : r.personId}
+                {' — '}{r.note}
+              </p>
+            );
+          })}
         </>
       )}
       <p className="muted">A record is matched on name, lifespan and parentage together, never on name alone.</p>
