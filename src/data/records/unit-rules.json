@@ -10,6 +10,8 @@
   {"country":"IND","match":["puducherry","pondicherry","karaikal","mahe","yanam"],"polity":"French India","from":1947,"to":1954,"note":"De facto transfer on 1 November 1954."},
   {"country":"IND","match":["sikkim"],"polity":"Kingdom of Sikkim","from":1947,"to":1975,"note":"Sikkim became a state of India in 1975."},
   {"country":"PAK","polity":"Pakistan","from":1947,"to":2027},
+  {"country":"PAK","onlyStates":["azad kashmir"],"polity":"Azad Kashmir","from":1947,"to":2027,"note":"Administered separately from Pakistan proper since the 1947–48 war; self-governing under Pakistani oversight, not a province of Pakistan. Claimed by India as part of the former princely state of Jammu and Kashmir."},
+  {"country":"PAK","onlyStates":["gilgit"],"polity":"Gilgit-Baltistan","from":1947,"to":2027,"note":"Administered directly by Pakistan's federal government since the 1947–48 war (the Gilgit Scouts' revolt against the Maharaja), separately from Azad Kashmir. Claimed by India as part of the former princely state of Jammu and Kashmir."},
   {"country":"BGD","polity":"Pakistan","from":1947,"to":1971,"note":"East Bengal, later East Pakistan."},
   {"country":"BGD","polity":"Bangladesh","from":1971,"to":2027},
   {"country":"NPL","polity":"Nepal","from":1768,"to":2027,"note":"From the unification under Prithvi Narayan Shah."},

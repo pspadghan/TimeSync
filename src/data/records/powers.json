@@ -144,5 +144,7 @@
   {"name":"British Burma","family":"european","colour":"#6745a1"},
   {"name":"Myanmar","family":"other","colour":"#663d66"},
   {"name":"Sultanate of Maldives","family":"islamic","colour":"#3e985f"},
-  {"name":"Maldives","family":"islamic","colour":"#20973e"}
+  {"name":"Maldives","family":"islamic","colour":"#20973e"},
+  {"name":"Azad Kashmir","family":"islamic","colour":"#6fc99a"},
+  {"name":"Gilgit-Baltistan","family":"islamic","colour":"#1d7a4c"}
 ]
