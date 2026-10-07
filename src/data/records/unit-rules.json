@@ -26,5 +26,6 @@
   {"country":"MMR","polity":"British Burma","from":1937,"to":1948},
   {"country":"MMR","polity":"Myanmar","from":1948,"to":2027,"note":"Independent as Burma in 1948."},
   {"country":"MDV","polity":"Sultanate of Maldives","from":1887,"to":1965,"note":"A British protectorate."},
-  {"country":"MDV","polity":"Maldives","from":1965,"to":2027}
+  {"country":"MDV","polity":"Maldives","from":1965,"to":2027},
+  {"country":"CHN","polity":"People's Republic of China","from":1962,"to":2027,"note":"Aksai Chin, held by China since the 1962 war with India. Before 1962 it is left to the same Jammu and Kashmir (Dogra)/British Raj/Republic of India record as the rest of Ladakh, which it was never separately administered from. Claimed by India as part of Ladakh."}
 ]
