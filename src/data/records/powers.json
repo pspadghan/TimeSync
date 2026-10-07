@@ -149,5 +149,6 @@
   {"name":"Gilgit-Baltistan","family":"islamic","colour":"#1d7a4c"},
   {"name":"People's Republic of China","family":"other","colour":"#c0392b"},
   {"name":"Indo-Scythian kingdoms","family":"other","colour":"#8a7a9e"},
-  {"name":"Indo-Parthian Kingdom","family":"other","colour":"#6b5b8c"}
+  {"name":"Indo-Parthian Kingdom","family":"other","colour":"#6b5b8c"},
+  {"name":"Kachhapaghata dynasty","family":"indic","colour":"#d99830"}
 ]
