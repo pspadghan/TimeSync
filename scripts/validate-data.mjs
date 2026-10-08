@@ -73,6 +73,28 @@ for (const p of people) {
   }
 }
 
+// Event-table structural checks: catches the exact mistake made this session (independently
+// researching and adding an event that already existed under a different id). An id collision
+// can't happen in a JSON array — this instead catches same-moment duplicates at the content
+// level, which is the actual failure mode: two different ids for the same real-world event.
+const seenEventId = new Set();
+const byDateAndPlace = new Map();
+for (const e of events) {
+  if (seenEventId.has(e.id)) errors.push(`event "${e.id}" is listed twice`);
+  seenEventId.add(e.id);
+  for (const id of e.personIds ?? []) if (!personIds.has(id)) errors.push(`event "${e.id}": unknown person "${id}"`);
+  for (const s of e.sourceIds ?? []) if (!sourceIds.has(s)) errors.push(`event "${e.id}": unknown source "${s}"`);
+  if (!e.sourceIds?.length) errors.push(`event "${e.id}": no supporting work`);
+  // Round coordinates coarsely: two events a few hundred metres apart on the same day are the
+  // same moment described twice, not two nearby happenings — the fuzz only has to be loose
+  // enough to catch that, not pinpoint-exact.
+  const key = `${e.date}@${e.lng.toFixed(1)},${e.lat.toFixed(1)}`;
+  byDateAndPlace.set(key, [...(byDateAndPlace.get(key) ?? []), e.id]);
+}
+for (const [key, ids] of byDateAndPlace) {
+  if (ids.length > 1) errors.push(`duplicate event: ${ids.join(' and ')} are both dated/placed at ${key} — merge them into one event and point every person at it`);
+}
+
 const byPerson = new Map();
 for (const e of events) {
   if (e.precision !== 'day') continue;
