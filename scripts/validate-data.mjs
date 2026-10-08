@@ -78,21 +78,32 @@ for (const p of people) {
 // can't happen in a JSON array — this instead catches same-moment duplicates at the content
 // level, which is the actual failure mode: two different ids for the same real-world event.
 const seenEventId = new Set();
-const byDateAndPlace = new Map();
+const byDate = new Map();
 for (const e of events) {
   if (seenEventId.has(e.id)) errors.push(`event "${e.id}" is listed twice`);
   seenEventId.add(e.id);
   for (const id of e.personIds ?? []) if (!personIds.has(id)) errors.push(`event "${e.id}": unknown person "${id}"`);
   for (const s of e.sourceIds ?? []) if (!sourceIds.has(s)) errors.push(`event "${e.id}": unknown source "${s}"`);
   if (!e.sourceIds?.length) errors.push(`event "${e.id}": no supporting work`);
-  // Round coordinates coarsely: two events a few hundred metres apart on the same day are the
-  // same moment described twice, not two nearby happenings — the fuzz only has to be loose
-  // enough to catch that, not pinpoint-exact.
-  const key = `${e.date}@${e.lng.toFixed(1)},${e.lat.toFixed(1)}`;
-  byDateAndPlace.set(key, [...(byDateAndPlace.get(key) ?? []), e.id]);
+  byDate.set(e.date, [...(byDate.get(e.date) ?? []), e]);
 }
-for (const [key, ids] of byDateAndPlace) {
-  if (ids.length > 1) errors.push(`duplicate event: ${ids.join(' and ')} are both dated/placed at ${key} — merge them into one event and point every person at it`);
+// Grouping by a rounded coordinate string missed a real duplicate once already (two points a
+// few km apart straddled a rounding boundary): measure actual distance instead, so no boundary
+// can hide a match. Two events on the same day within ~25km are almost certainly one real-world
+// moment described twice, not two coincidentally nearby happenings.
+const DUPLICATE_KM = 25;
+const haversineKm = (a, b) => {
+  const rad = Math.PI / 180;
+  const h = Math.sin(((b.lat - a.lat) * rad) / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(((b.lng - a.lng) * rad) / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(h));
+};
+for (const [date, list] of byDate) {
+  for (let i = 0; i < list.length; i++) {
+    for (let j = i + 1; j < list.length; j++) {
+      const km = haversineKm(list[i], list[j]);
+      if (km < DUPLICATE_KM) errors.push(`duplicate event: "${list[i].id}" and "${list[j].id}" are both dated ${date}, ${km.toFixed(0)}km apart — merge them into one event and point every person at it`);
+    }
+  }
 }
 
 const byPerson = new Map();
