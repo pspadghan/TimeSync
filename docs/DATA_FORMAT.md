@@ -128,7 +128,42 @@ relationship lists and event records.
 - `uid` — `CHR-P-NNNN`, permanent, sequential, **never reused or renumbered**
   even if the person turns out to be a duplicate (merge the records instead;
   see `namesakes` for same-name-different-person cases). Next free number =
-  `max(existing uids) + 1`.
+  `max(existing uids) + 1`. This is the one key that's collision-proof by
+  construction — it's a counter, not derived from anything that could later
+  turn out to be wrong or disputed. It never changes even if the person's
+  dates get corrected.
+
+#### Disambiguating `id` for a reused name
+
+`id` defaults to a plain name slug (`shivaji`). When a name is reused by
+more than one person in the dataset, make the *later*-added one's `id`
+self-disambiguating instead of just appending a number:
+
+```
+<name-slug>-<born>-<died>[-<father's-id>]
+```
+
+- Dates: BCE as a plain negative-style suffix, `bc` not a minus sign (ids
+  can't start with `-`) — e.g. `ashoka-304bc-232bc`. CE dates plain —
+  `shivaji-ii-1696-1726`.
+- If `born`/`died` alone still isn't enough to tell two same-name,
+  same-era people apart, append the father's own `id` —
+  `rajaram-ii-1726-1777-tarabai` style (use whichever parent is attested;
+  `father` by default, `mother` if that's the attested one instead).
+- Where a year itself is only approximate (`bornApprox`/`diedApprox`),
+  use it in the id anyway — the flag on the record itself is what marks it
+  approximate, the id just needs to be *stable*, not perfectly precise.
+  Don't leave an ancient figure's id undisambiguated just because the date
+  is fuzzy; a fuzzy-but-present date still disambiguates better than
+  nothing.
+- **Always add a matching `namesakes[]` entry on both records** — the id
+  suffix is for machine disambiguation; `namesakes` is what tells a human
+  reader "these are different people" in plain language. Do both, every
+  time a name is reused.
+- The *first* person to hold a plain name keeps the plain `id` — don't
+  rename an existing id to add a suffix retroactively, since `id` is
+  referenced from other records and relationships. Only the newly-added,
+  name-colliding person gets the disambiguated form.
 
 ### `born` / `died`
 
