@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { personById } from '../data/people';
+import { people, personById } from '../data/people';
 import type { Person, RelationshipKind } from '../data/types';
 
 const RELATIONSHIP_LABEL: Record<RelationshipKind, string> = {
@@ -7,13 +8,21 @@ const RELATIONSHIP_LABEL: Record<RelationshipKind, string> = {
   enemy: 'Enemy', mentor: 'Mentor', subordinate: 'Subordinate', overlord: 'Overlord',
 };
 
+const byName = new Map(people.map((p) => [p.name, p]));
+
+/** A parent's name, linked to their own record when one exists under that exact name. */
+function Parent({ name }: { name: string }) {
+  const match = byName.get(name);
+  return match ? <Link className="link" to={`/people/${match.id}`}>{name}</Link> : <>{name}</>;
+}
+
 /** Everything that pins a record to exactly one human being. */
 export function IdentityCard({ person }: { person: Person }) {
-  const rows: [string, string | undefined][] = [
+  const rows: [string, ReactNode][] = [
     ['Lived', `${person.born}–${person.died}`],
     ['House', person.house],
-    ['Father', person.father],
-    ['Mother', person.mother],
+    ['Father', person.father && <Parent name={person.father} />],
+    ['Mother', person.mother && <Parent name={person.mother} />],
     ['Born at', person.birthPlace],
     ['Died at', person.deathPlace],
     ['Also recorded as', person.aliases.join(' · ')],
