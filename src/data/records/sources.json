@@ -45,5 +45,6 @@
   {"id":"gordon","title":"The Marathas 1600–1818 (New Cambridge History of India)","author":"Stewart Gordon","kind":"scholarship","dated":"1993"},
   {"id":"stein","title":"Vijayanagara (New Cambridge History of India)","author":"Burton Stein","kind":"scholarship","dated":"1989"},
   {"id":"grewal","title":"The Sikhs of the Punjab (New Cambridge History of India)","author":"J. S. Grewal","kind":"scholarship","dated":"1990"},
-  {"id":"mahavamsa","title":"Mahāvaṃsa","author":"Buddhist monastic tradition, Sri Lanka","kind":"near-contemporary","dated":"c. 5th century CE, compiling earlier oral and written tradition","note":"The main surviving account of Mahinda and Sanghamitta's mission to Sri Lanka, written centuries after the events it describes."}
+  {"id":"mahavamsa","title":"Mahāvaṃsa","author":"Buddhist monastic tradition, Sri Lanka","kind":"near-contemporary","dated":"c. 5th century CE, compiling earlier oral and written tradition","note":"The main surviving account of Mahinda and Sanghamitta's mission to Sri Lanka, written centuries after the events it describes."},
+  {"id":"menon","title":"The Story of the Integration of the Indian States","author":"V. P. Menon","kind":"primary","dated":"1956","note":"Written by the Indian civil servant who personally directed the 1947–49 integration of the princely states."}
 ]
