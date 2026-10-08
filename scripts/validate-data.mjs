@@ -54,6 +54,15 @@ const events = JSON.parse(readFileSync(path.join(dir, 'records', 'events.json'),
 const people = JSON.parse(readFileSync(path.join(dir, 'records', 'people.json'), 'utf8'));
 const personIds = new Set(people.map((p) => p.id));
 
+const seenPersonId = new Set();
+const seenUid = new Set();
+for (const p of people) {
+  if (seenPersonId.has(p.id)) errors.push(`person "${p.id}" is listed twice — give the second one a distinct id, and a namesakes entry on both if they share a name`);
+  seenPersonId.add(p.id);
+  if (seenUid.has(p.uid)) errors.push(`person "${p.id}": uid "${p.uid}" is already used by another person — uids must never be reused`);
+  seenUid.add(p.uid);
+}
+
 for (const p of people) {
   for (const r of p.relationships ?? []) {
     const at = `${p.id} relationship -> ${r.personId}`;
