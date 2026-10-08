@@ -44,5 +44,6 @@
   {"id":"richards","title":"The Mughal Empire (New Cambridge History of India)","author":"John F. Richards","kind":"scholarship","dated":"1993"},
   {"id":"gordon","title":"The Marathas 1600–1818 (New Cambridge History of India)","author":"Stewart Gordon","kind":"scholarship","dated":"1993"},
   {"id":"stein","title":"Vijayanagara (New Cambridge History of India)","author":"Burton Stein","kind":"scholarship","dated":"1989"},
-  {"id":"grewal","title":"The Sikhs of the Punjab (New Cambridge History of India)","author":"J. S. Grewal","kind":"scholarship","dated":"1990"}
+  {"id":"grewal","title":"The Sikhs of the Punjab (New Cambridge History of India)","author":"J. S. Grewal","kind":"scholarship","dated":"1990"},
+  {"id":"mahavamsa","title":"Mahāvaṃsa","author":"Buddhist monastic tradition, Sri Lanka","kind":"near-contemporary","dated":"c. 5th century CE, compiling earlier oral and written tradition","note":"The main surviving account of Mahinda and Sanghamitta's mission to Sri Lanka, written centuries after the events it describes."}
 ]
