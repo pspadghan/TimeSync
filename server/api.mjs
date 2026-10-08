@@ -102,8 +102,10 @@ function utcMs(y, m, d) {
   dt.setUTCFullYear(y);
   return dt.getTime();
 }
+// A date may carry an optional recorded time of day (`T14:30`); the day/month/year bucketing
+// here doesn't need that precision, only src/data/time.ts's client-side toMs() does.
 function isoParts(iso) {
-  const [, y, m, d] = /^(-?[0-9]+)-([0-9]+)-([0-9]+)$/.exec(iso).map(Number);
+  const [, y, m, d] = /^(-?[0-9]+)-([0-9]+)-([0-9]+)(?:T[0-9:]+)?$/.exec(iso).map(Number);
   return [y, m - 1, d];
 }
 const DAY = 86400000;

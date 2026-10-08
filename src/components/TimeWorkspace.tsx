@@ -5,11 +5,11 @@ import { addUnits, eventsChrono, formatDate, inWindow, MAX_YEAR, MIN_MS, MIN_YEA
 import { useCollapse } from '../state/collapse';
 import { DEEP_START_MA, DEEP_STEP_MA, RATES, useTime } from '../state/time';
 
-const SCALES: Scale[] = ['century', 'year', 'month', 'day', 'hour'];
-const SCALE_NAME: Record<Scale, string> = { century: 'Century', year: 'Year', month: 'Month', day: 'Day', hour: 'Hour' };
-const FINER: Record<Scale, Scale> = { century: 'year', year: 'month', month: 'day', day: 'hour', hour: 'hour' };
+const SCALES: Scale[] = ['century', 'year', 'month', 'day', 'hour', 'minute'];
+const SCALE_NAME: Record<Scale, string> = { century: 'Century', year: 'Year', month: 'Month', day: 'Day', hour: 'Hour', minute: 'Minute' };
+const FINER: Record<Scale, Scale> = { century: 'year', year: 'month', month: 'day', day: 'hour', hour: 'minute', minute: 'minute' };
 const DAY = 86400000;
-const UNIT_MS: Record<Scale, number> = { hour: DAY / 24, day: DAY, month: DAY * 30.4369, year: DAY * 365.2425, century: DAY * 36524.25 };
+const UNIT_MS: Record<Scale, number> = { minute: DAY / 1440, hour: DAY / 24, day: DAY, month: DAY * 30.4369, year: DAY * 365.2425, century: DAY * 36524.25 };
 const TICK_PX = 130;
 const LABEL_EVERY = 4; // every 4th tick carries a reference date; the rest stay bare lines
 const DRAG_SLOP = 4;

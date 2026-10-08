@@ -1,6 +1,9 @@
 export type EvidenceState = 'documented' | 'corroborated' | 'inferred' | 'disputed' | 'unknown';
 
-export type Precision = 'day' | 'month' | 'year';
+/** How precisely a date is actually known. Always use the finest one the evidence supports —
+ * never fall back to `year` just because it's the common case; a battle with a recorded hour
+ * of day should say `hour`, a treaty signed at a recorded minute should say `minute`. */
+export type Precision = 'minute' | 'hour' | 'day' | 'month' | 'year';
 
 /**
  * Dates are stored exactly as the cited scholarship gives them. `julian` = Old Style,

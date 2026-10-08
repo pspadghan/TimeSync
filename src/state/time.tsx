@@ -5,6 +5,7 @@ import { addUnits, clampMs, MAX_MS, MIN_MS, toMs, type Scale } from '../data/tim
 const DAY_MS = 86400000;
 /** Playback rates: how much history passes in one second of watching. */
 export const RATES = [
+  { id: 'minute', label: '1 minute', ms: DAY_MS / 1440, scale: 'minute', hold: 650 },
   { id: 'hour', label: '1 hour', ms: DAY_MS / 24, scale: 'hour', hold: 600 },
   { id: 'day', label: '1 day', ms: DAY_MS, scale: 'day', hold: 500 },
   { id: 'month', label: '1 month', ms: DAY_MS * 30.4369, scale: 'month', hold: 450 },

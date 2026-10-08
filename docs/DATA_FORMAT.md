@@ -318,6 +318,31 @@ independence, disaster, science` — it picks the map icon. `calendar` is
 `julian` | `gregorian` | `as-cited` (the source doesn't say) — dates before
 the Gregorian calendar's adoption in a given region are usually `julian`.
 
+### `date` and `precision` — always use the finest you actually know
+
+`precision` is one of `minute | hour | day | month | year`. **Never default
+to `year` just because it's the common case** — if a source gives an exact
+time of day, use it:
+
+```json
+{ "date": "1984-10-31T09:20", "precision": "minute" }
+{ "date": "1974-05-18T08:05", "precision": "hour" }
+{ "date": "1660-07-13", "precision": "day" }
+{ "date": "1947-08-15", "precision": "day" }
+{ "date": "-322-01-01", "precision": "year" }
+```
+
+`date` is `YYYY-MM-DD` with an optional `THH:MM` (or just `THH`) suffix —
+the time suffix only when `precision` is `hour` or `minute`. BCE years are
+written as a plain negative number (`-322`, not `322 BCE`); before any
+written calendar existed at all, `year` is the coarsest `precision` ever
+needed and that's expected, not a shortfall — the rule is "finest the
+evidence supports," and for most of antiquity that ceiling is genuinely
+`year` or coarser. The same `minute`/`hour` precision applies to a
+`JourneyStage`'s linked event (via `eventId`) — the stage's own `year`
+field stays a plain number for display, but the exact time of day lives on
+the event it points to and renders wherever that event is shown.
+
 ## `unit-rules.json` (modern/1500+ territory only)
 
 ```json
