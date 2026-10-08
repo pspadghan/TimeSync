@@ -58,6 +58,25 @@ await mkdir(RAW, { recursive: true });
 await mkdir(OUT, { recursive: true });
 const features = [];
 const sources = [];
+
+// Aksai Chin has been administered by China since the 1962 war, but India's own official
+// cartography (the source behind the geoBoundaries IND release above) draws it as part of
+// Leh district, so no South Asian government file gives it its own shape. Natural Earth's
+// public-domain disputed-areas layer is the one open dataset that does draw it separately.
+// Added first, so it claims its cells in loadUnits() (src/data/grid.ts) ahead of Leh's own
+// polygon, which otherwise covers the same ground.
+{
+  const disputed = await cached('ne_10m_admin_0_disputed_areas.geojson', () => get('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_disputed_areas.geojson'));
+  const aksaiChin = disputed.features.find((f) => f.properties.BRK_NAME === 'Aksai Chin');
+  if (aksaiChin) {
+    const polys = polysOf(aksaiChin.geometry).map((poly) => poly.map(slimRing).filter((r) => r.length >= 4)).filter((poly) => poly.length);
+    if (polys.length) {
+      features.push({ type: 'Feature', properties: { id: features.length + 1, name: 'Aksai Chin', country: 'CHN', state: '' }, geometry: { type: 'MultiPolygon', coordinates: polys } });
+      sources.push({ country: 'CHN', source: 'Natural Earth, ne_10m_admin_0_disputed_areas (public domain)', licence: 'public domain', year: null });
+      console.log('Aksai Chin: 1 (Natural Earth ne_10m_admin_0_disputed_areas, public domain)');
+    }
+  }
+}
 for (const [iso, release, level, withParent = true] of SOURCES) {
   const load = async (lvl) => {
     const m = await cached(`${iso}-${release}-${lvl}.meta.json`, () => get(`https://www.geoboundaries.org/api/current/${release}/${iso}/${lvl}/`));

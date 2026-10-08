@@ -8,7 +8,7 @@ import { readProfile, roleAtLeast, type Role } from '../state/account';
 import { useCollapse } from '../state/collapse';
 import { useTime } from '../state/time';
 
-const PRECISION_LABEL = { century: 'Century', year: 'Year', month: 'Month', day: 'Date', hour: 'Hour' };
+const PRECISION_LABEL = { century: 'Century', year: 'Year', month: 'Month', day: 'Date', hour: 'Hour', minute: 'Minute' };
 
 const NAV = [
   { to: '/', glyph: '⌖', label: 'Explore', end: true },

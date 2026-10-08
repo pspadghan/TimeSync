@@ -144,5 +144,12 @@
   {"name":"British Burma","family":"european","colour":"#6745a1"},
   {"name":"Myanmar","family":"other","colour":"#663d66"},
   {"name":"Sultanate of Maldives","family":"islamic","colour":"#3e985f"},
-  {"name":"Maldives","family":"islamic","colour":"#20973e"}
+  {"name":"Maldives","family":"islamic","colour":"#20973e"},
+  {"name":"Pakistan Occupied Kashmir","family":"islamic","colour":"#6fc99a"},
+  {"name":"Gilgit-Baltistan","family":"islamic","colour":"#1d7a4c"},
+  {"name":"People's Republic of China","family":"other","colour":"#c0392b"},
+  {"name":"Indo-Scythian kingdoms","family":"other","colour":"#8a7a9e"},
+  {"name":"Indo-Parthian Kingdom","family":"other","colour":"#6b5b8c"},
+  {"name":"Kachhapaghata dynasty","family":"indic","colour":"#d99830"},
+  {"name":"Kalabhra dynasty","family":"indic","colour":"#8c6a4a"}
 ]

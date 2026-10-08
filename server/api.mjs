@@ -71,8 +71,13 @@ function build() {
   const insertEvent = db.prepare('INSERT INTO event VALUES (?, ?, ?, ?)');
   const eventSpan = new Map(); // id -> { to, lng, lat }, needed below when a journey stage links here
   for (const e of load('events.json')) {
-    const [y, m, d] = isoParts(e.date);
-    const [from, to] = e.precision === 'day' ? [utcMs(y, m, d), utcMs(y, m, d + 1)] : e.precision === 'month' ? [utcMs(y, m, 1), utcMs(y, m + 1, 1)] : [utcMs(y, 0, 1), utcMs(y + 1, 0, 1)];
+    const [y, m, d, h, mi] = isoParts(e.date);
+    const [from, to] =
+      e.precision === 'minute' ? [utcMs(y, m, d, h, mi), utcMs(y, m, d, h, mi + 1)]
+      : e.precision === 'hour' ? [utcMs(y, m, d, h), utcMs(y, m, d, h + 1)]
+      : e.precision === 'day' ? [utcMs(y, m, d), utcMs(y, m, d + 1)]
+      : e.precision === 'month' ? [utcMs(y, m, 1), utcMs(y, m + 1, 1)]
+      : [utcMs(y, 0, 1), utcMs(y + 1, 0, 1)];
     insertEvent.run(e.id, from, to, JSON.stringify(e));
     eventSpan.set(e.id, { to, lng: e.lng, lat: e.lat });
     for (const id of e.personIds) appearance.run(id, from, to, e.precision, e.lng, e.lat, e.title, 'event', e.id);
@@ -97,14 +102,16 @@ function build() {
 }
 
 /** UTC timestamp that also works for years before 100 and before 1 (Date.UTC alone does not). */
-function utcMs(y, m, d) {
-  const dt = new Date(Date.UTC(2000, m, d));
+function utcMs(y, m, d, h = 0, mi = 0) {
+  const dt = new Date(Date.UTC(2000, m, d, h, mi));
   dt.setUTCFullYear(y);
   return dt.getTime();
 }
+// A date may carry an optional recorded time of day (`T14:30`), used when precision is 'hour' or 'minute'.
 function isoParts(iso) {
-  const [, y, m, d] = /^(-?[0-9]+)-([0-9]+)-([0-9]+)$/.exec(iso).map(Number);
-  return [y, m - 1, d];
+  const m = /^(-?[0-9]+)-([0-9]+)-([0-9]+)(?:T([0-9]+)(?::([0-9]+))?)?$/.exec(iso);
+  const [, y, mo, d, h, mi] = m;
+  return [Number(y), Number(mo) - 1, Number(d), h === undefined ? 0 : Number(h), mi === undefined ? 0 : Number(mi)];
 }
 const DAY = 86400000;
 const yearOf = (ms) => new Date(ms).getUTCFullYear();

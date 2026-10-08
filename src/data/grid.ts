@@ -224,9 +224,26 @@ function loadUnits(): Promise<Units> {
   unitsRequest ??= fetch('/data/base/units.json').then((r) => r.json()).then((fc: FeatureCollection<MultiPolygon, { id: number; name: string; country: string; state: string }>) => {
     const grid = new Uint16Array(SIZE * SIZE);
     const list: Units['list'] = [{ id: 0, name: '', country: '', state: '', cells: 0, x0: 0, y0: 0, x1: 0, y1: 0 }];
+    const centroid: [number, number][] = [[0, 0]];
     for (const f of fc.features) {
       const unit = { id: f.properties.id, name: f.properties.name, country: f.properties.country, state: f.properties.state ?? '', cells: 0, x0: SIZE, y0: SIZE, x1: -1, y1: -1 };
       const id = list.push(unit) - 1;
+      // A unit smaller than one raster cell can end up with no cell centre inside it at all
+      // (confirmed on Nepal, whose ~775 local-level units run far finer than every other
+      // country's district-level data): the scanline fill below then assigns it literally
+      // nothing, leaving a true gap — background shows through as a hole in the fill, which at
+      // a country with many such units reads as a scatter of small black patches. Tracking the
+      // outer ring's centroid here lets the fallback pass after the main loop give every such
+      // unit at least one cell instead of silently vanishing.
+      const outer = f.geometry.coordinates[0]?.[0];
+      let cx = SIZE / 2, cy = SIZE / 2;
+      if (outer?.length) {
+        let sx = 0, sy = 0;
+        for (const [lng, lat] of outer) { sx += ((lng + 180) / 360) * SIZE; sy += mercY(lat); }
+        cx = sx / outer.length;
+        cy = sy / outer.length;
+      }
+      centroid.push([cx, cy]);
       for (const rings of f.geometry.coordinates) {
         const edges: number[][] = [];
         let minY = Infinity, maxY = -Infinity;
@@ -255,6 +272,21 @@ function loadUnits(): Promise<Units> {
           }
         }
       }
+    }
+    // Force at least one cell for any unit the scanline fill missed entirely (see the comment
+    // above): claim the cell nearest its own centroid, even if another unit already holds it —
+    // a one-cell border error on a neighbour is far less visible than this unit vanishing.
+    const isLand = landMask();
+    for (let id = 1; id < list.length; id++) {
+      if (list[id].cells > 0) continue;
+      const col = Math.min(SIZE - 1, Math.max(0, Math.round(centroid[id][0])));
+      const row = Math.min(SIZE - 1, Math.max(0, Math.round(centroid[id][1])));
+      if (!isLand[row * SIZE + col]) continue;
+      grid[row * SIZE + col] = id;
+      const unit = list[id];
+      unit.cells = 1;
+      unit.x0 = unit.x1 = col;
+      unit.y0 = unit.y1 = row;
     }
     return { grid, list };
   });

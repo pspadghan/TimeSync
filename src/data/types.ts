@@ -1,6 +1,9 @@
 export type EvidenceState = 'documented' | 'corroborated' | 'inferred' | 'disputed' | 'unknown';
 
-export type Precision = 'day' | 'month' | 'year';
+/** How precisely a date is actually known. Always use the finest one the evidence supports —
+ * never fall back to `year` just because it's the common case; a battle with a recorded hour
+ * of day should say `hour`, a treaty signed at a recorded minute should say `minute`. */
+export type Precision = 'minute' | 'hour' | 'day' | 'month' | 'year';
 
 /**
  * Dates are stored exactly as the cited scholarship gives them. `julian` = Old Style,
@@ -79,6 +82,19 @@ export interface Namesake {
   note: string;
 }
 
+export type RelationshipKind = 'family' | 'ally' | 'friend' | 'rival' | 'enemy' | 'mentor' | 'subordinate' | 'overlord';
+
+/** A tie to another person on record — the social graph a life is actually lived inside, not
+ * just the dated stages of one person's own journey. Each side of a relationship is its own
+ * row (not auto-mirrored), so the two people can carry different notes on the same tie. */
+export interface Relationship {
+  personId: string;
+  kind: RelationshipKind;
+  /** What the kind does not already say: how they met, how it changed, how it ended. */
+  note: string;
+  sourceIds: string[];
+}
+
 export interface Person {
   id: string;
   /** Permanent Chronoscope identifier. Never reused, never changed when a name is corrected. */
@@ -95,11 +111,17 @@ export interface Person {
   deathPlace?: string;
   namesakes?: Namesake[];
   born: number;
+  /** True when `born` is the best scholarly estimate rather than an attested year. */
+  bornApprox?: boolean;
   died: number;
+  diedApprox?: boolean;
   role: string;
   summary: string;
   phases?: string[];
   journey?: JourneyStage[];
+  /** Other people on record from this person's life: family beyond parents, allies, rivals,
+   * enemies, mentors. Builds the web a biography sits inside instead of an isolated record. */
+  relationships?: Relationship[];
   /** A commissioned portrait icon for this person's map marker, overriding the generic bust
    * glyph. Not used yet — every person currently draws the same shared silhouette in their own
    * colour (src/components/mapIcons.ts); this field exists so a specific likeness can be added

@@ -52,6 +52,60 @@ for (const p of places) if (!byPlace.has(p.id)) notes.push(`place "${p.id}" has 
 // calendar day would make that pick silently arbitrary, so it is surfaced here instead.
 const events = JSON.parse(readFileSync(path.join(dir, 'records', 'events.json'), 'utf8'));
 const people = JSON.parse(readFileSync(path.join(dir, 'records', 'people.json'), 'utf8'));
+const personIds = new Set(people.map((p) => p.id));
+
+const seenPersonId = new Set();
+const seenUid = new Set();
+for (const p of people) {
+  if (seenPersonId.has(p.id)) errors.push(`person "${p.id}" is listed twice — give the second one a distinct id, and a namesakes entry on both if they share a name`);
+  seenPersonId.add(p.id);
+  if (seenUid.has(p.uid)) errors.push(`person "${p.id}": uid "${p.uid}" is already used by another person — uids must never be reused`);
+  seenUid.add(p.uid);
+}
+
+for (const p of people) {
+  for (const r of p.relationships ?? []) {
+    const at = `${p.id} relationship -> ${r.personId}`;
+    if (!personIds.has(r.personId)) errors.push(`${at}: unknown person`);
+    if (r.personId === p.id) errors.push(`${at}: a person cannot be related to themself`);
+    if (!r.sourceIds?.length) errors.push(`${at}: no supporting work`);
+    for (const s of r.sourceIds ?? []) if (!sourceIds.has(s)) errors.push(`${at}: unknown source "${s}"`);
+  }
+}
+
+// Event-table structural checks: catches the exact mistake made this session (independently
+// researching and adding an event that already existed under a different id). An id collision
+// can't happen in a JSON array — this instead catches same-moment duplicates at the content
+// level, which is the actual failure mode: two different ids for the same real-world event.
+const seenEventId = new Set();
+const byDate = new Map();
+for (const e of events) {
+  if (seenEventId.has(e.id)) errors.push(`event "${e.id}" is listed twice`);
+  seenEventId.add(e.id);
+  for (const id of e.personIds ?? []) if (!personIds.has(id)) errors.push(`event "${e.id}": unknown person "${id}"`);
+  for (const s of e.sourceIds ?? []) if (!sourceIds.has(s)) errors.push(`event "${e.id}": unknown source "${s}"`);
+  if (!e.sourceIds?.length) errors.push(`event "${e.id}": no supporting work`);
+  byDate.set(e.date, [...(byDate.get(e.date) ?? []), e]);
+}
+// Grouping by a rounded coordinate string missed a real duplicate once already (two points a
+// few km apart straddled a rounding boundary): measure actual distance instead, so no boundary
+// can hide a match. Two events on the same day within ~25km are almost certainly one real-world
+// moment described twice, not two coincidentally nearby happenings.
+const DUPLICATE_KM = 25;
+const haversineKm = (a, b) => {
+  const rad = Math.PI / 180;
+  const h = Math.sin(((b.lat - a.lat) * rad) / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(((b.lng - a.lng) * rad) / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(h));
+};
+for (const [date, list] of byDate) {
+  for (let i = 0; i < list.length; i++) {
+    for (let j = i + 1; j < list.length; j++) {
+      const km = haversineKm(list[i], list[j]);
+      if (km < DUPLICATE_KM) errors.push(`duplicate event: "${list[i].id}" and "${list[j].id}" are both dated ${date}, ${km.toFixed(0)}km apart — merge them into one event and point every person at it`);
+    }
+  }
+}
+
 const byPerson = new Map();
 for (const e of events) {
   if (e.precision !== 'day') continue;

@@ -1,15 +1,15 @@
 import { events } from './events';
 import type { Calendar, HistEvent, Precision } from './types';
 
-export type Scale = 'century' | 'year' | 'month' | 'day' | 'hour';
+export type Scale = 'century' | 'year' | 'month' | 'day' | 'hour' | 'minute';
 
 /** The timeline spans the boundary snapshots: 7000 BCE to 2026 CE. Negative years are BCE. */
 export const MIN_YEAR = -7000;
 export const MAX_YEAR = 2026;
 
 /** Date.UTC treats years 0–99 as 1900–1999, so build every timestamp through this. */
-export function utc(y: number, m = 0, d = 1): number {
-  const dt = new Date(Date.UTC(2000, m, d));
+export function utc(y: number, m = 0, d = 1, h = 0, min = 0): number {
+  const dt = new Date(Date.UTC(2000, m, d, h, min));
   dt.setUTCFullYear(y);
   return dt.getTime();
 }
@@ -19,17 +19,19 @@ export const MAX_MS = utc(MAX_YEAR, 11, 31);
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const RANK: Record<Scale, number> = { hour: -1, day: 0, month: 1, year: 2, century: 3 };
+const RANK: Record<Scale, number> = { minute: -2, hour: -1, day: 0, month: 1, year: 2, century: 3 };
 
+/** Accepts a bare date (`1660-07-13`) or a date with a recorded time of day
+ * (`1660-07-13T14:30` or `T14`). A leading minus marks a BCE year, so the string cannot simply
+ * be split on hyphens. */
 export function toMs(iso: string): number {
-  // A leading minus marks a BCE year, so the string cannot simply be split on hyphens.
-  const [, y, m, d] = /^(-?\d+)-(\d+)-(\d+)$/.exec(iso)!.map(Number);
-  return utc(y, m - 1, d);
+  const [, y, m, d, h, min] = /^(-?\d+)-(\d+)-(\d+)(?:T(\d+)(?::(\d+))?)?$/.exec(iso)!.map((v) => (v === undefined ? undefined : Number(v)));
+  return utc(y!, m! - 1, d!, h ?? 0, min ?? 0);
 }
 
 export function parts(ms: number) {
   const dt = new Date(ms);
-  return { y: dt.getUTCFullYear(), m: dt.getUTCMonth(), d: dt.getUTCDate() };
+  return { y: dt.getUTCFullYear(), m: dt.getUTCMonth(), d: dt.getUTCDate(), h: dt.getUTCHours(), min: dt.getUTCMinutes() };
 }
 
 export const clampMs = (ms: number) => Math.min(MAX_MS, Math.max(MIN_MS, ms));
@@ -42,10 +44,14 @@ function centuryLabel(y: number): string {
   return `${s || 1}–${s + 99}${s < 1000 ? ' CE' : ''}`;
 }
 
-const hourText = (ms: number) => `${String(new Date(ms).getUTCHours()).padStart(2, '0')}:00`;
+const hourText = (ms: number) => {
+  const { h, min } = parts(ms);
+  return `${String(h).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+};
 
 export function addUnits(ms: number, scale: Scale, n: number): number {
   const { y, m, d } = parts(ms);
+  if (scale === 'minute') return ms + n * 60000;
   if (scale === 'hour') return ms + n * 3600000;
   if (scale === 'day') return ms + n * 86400000;
   if (scale === 'month') return utc(y, m + n, Math.min(d, 28));
@@ -55,6 +61,7 @@ export function addUnits(ms: number, scale: Scale, n: number): number {
 /** First instant of the unit that contains `ms`. */
 export function startOf(ms: number, scale: Scale): number {
   const { y, m, d } = parts(ms);
+  if (scale === 'minute') return Math.floor(ms / 60000) * 60000;
   if (scale === 'hour') return Math.floor(ms / 3600000) * 3600000;
   if (scale === 'day') return utc(y, m, d);
   if (scale === 'month') return utc(y, m, 1);
@@ -67,7 +74,7 @@ export function formatDate(ms: number, precision: Scale = 'day', long = true): s
   if (precision === 'century') return centuryLabel(y);
   if (precision === 'year') return yearLabel(y);
   if (precision === 'month') return `${month} ${yearLabel(y)}`;
-  if (precision === 'hour') return `${d} ${month} ${yearLabel(y)}, ${hourText(ms)}`;
+  if (precision === 'hour' || precision === 'minute') return `${d} ${month} ${yearLabel(y)}, ${hourText(ms)}`;
   return `${d} ${month} ${yearLabel(y)}`;
 }
 
@@ -76,7 +83,7 @@ export function tickLabel(ms: number, scale: Scale): string {
   if (scale === 'century') return centuryLabel(y);
   if (scale === 'year') return yearLabel(y);
   if (scale === 'month') return `${MONTHS[m]} ${yearLabel(y)}`;
-  if (scale === 'hour') return hourText(ms);
+  if (scale === 'hour' || scale === 'minute') return hourText(ms);
   return `${d} ${MONTHS[m]}`;
 }
 
@@ -95,7 +102,11 @@ function sameUnit(a: number, b: number, unit: Scale): boolean {
   if (pa.y !== pb.y) return false;
   if (unit === 'year') return true;
   if (pa.m !== pb.m) return false;
-  return unit === 'month' || pa.d === pb.d;
+  if (unit === 'month') return true;
+  if (pa.d !== pb.d) return false;
+  if (unit === 'day') return true;
+  if (pa.h !== pb.h) return false;
+  return unit === 'hour' || pa.min === pb.min;
 }
 
 /** An event is in view when it falls in the playhead's window, at the coarser of scale and its own precision. */
