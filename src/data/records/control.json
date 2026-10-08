@@ -457,7 +457,7 @@
   {"placeId":"bhagalpur","polity":"Pala Empire","from":750,"to":1160,"sourceIds":["singh","kulke"],"note":"Approximate dates."},
   {"placeId":"mathura","polity":"Gurjara-Pratihara dynasty","from":816,"to":1018,"sourceIds":["kulke"],"note":"Approximate dates."},
   {"placeId":"ujjain","polity":"Gurjara-Pratihara dynasty","from":836,"to":950,"sourceIds":["kulke"],"note":"Approximate dates."},
-  {"placeId":"ujjain","polity":"Paramara dynasty","from":1000,"to":1235,"sourceIds":["kulke"],"note":"Approximate dates."},
+  {"placeId":"ujjain","polity":"Paramara dynasty","from":972,"to":1235,"sourceIds":["kulke"],"note":"Siyaka II broke from Pratihara vassalage around 972, sacking the Rashtrakuta capital Manyakheta soon after."},
   {"placeId":"ujjain","polity":"Delhi Sultanate","from":1235,"to":1401,"sourceIds":["minhaj","barani"],"note":"Taken by Iltutmish in 1235. End date approximate."},
   {"placeId":"ujjain","polity":"Malwa Sultanate","from":1401,"to":1531,"sourceIds":["firishta","kulke"],"note":"Approximate dates."},
   {"placeId":"lakkundi","polity":"Western Chalukyas","from":1042,"to":1189,"sourceIds":["sastri"],"note":"Approximate dates."},
